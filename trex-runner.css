@@ -1,0 +1,71 @@
+:root {
+  color-scheme: dark light;
+  --primary-bg: rgb(255, 255, 255);
+  --primary-fg: #000;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.dark-mode {
+  --primary-bg: #020202;
+  --primary-fg: #fff;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background: var(--primary-bg);
+  color: var(--primary-fg);
+}
+
+.controller {
+  position: absolute;
+  top: 1rem;
+}
+
+.interstitial-wrapper {
+  width: 600px;
+  height: 150px;
+}
+
+#offline-resources {
+  display: none;
+}
+
+#dark-mode-toggle {
+  border: none;
+  background: none;
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  font-size: 20px;
+  cursor: pointer;
+  color: transparent;
+  text-shadow: 0 0 0 #bbb;
+}
+
+#fullscreen-toggle {
+  border: none;
+  background: none;
+  position: fixed;
+  top: 25px;
+  right: 75px;
+  font-size: 30px;
+  cursor: pointer;
+  color: transparent;
+  text-shadow: 0 0 0 #bbb;
+}
+
+*:-webkit-full-screen {
+  background-color: var(--primary-bg);
+}
+
+html,
+body {
+  background-color: var(--primary-bg);
+}

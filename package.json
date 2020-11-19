@@ -1,0 +1,22 @@
+{
+  "name": "chrome-dino-webhid",
+  "version": "1.0.0",
+  "description": "Play the Chrome dino game over WebHID.",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx http-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomayac/chrome-dino-webhid.git"
+  },
+  "author": "Thomas Steiner (tomac@google.com)",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/tomayac/chrome-dino-webhid/issues"
+  },
+  "homepage": "https://github.com/tomayac/chrome-dino-webhid#readme",
+  "devDependencies": {
+    "http-server": "^0.12.3"
+  }
+}
