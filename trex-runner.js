@@ -616,9 +616,9 @@ let that = null;
       if (this.distanceRan > 100 && window.opener) {
         window.opener.postMessage({
           'action': 'dino-completed',
-          'score': this.distanceRan
-          'url': document.URL
-        }, '*')
+          'score': this.distanceRan,
+          'url': document.URL,
+        }, '*');
       }
     },
     stop: function () {
