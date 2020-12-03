@@ -4,7 +4,8 @@
   "description": "Play the Chrome dino game over WebHID.",
   "main": "index.js",
   "scripts": {
-    "start": "npx http-server"
+    "start": "npx http-server",
+    "prepare": "shx mkdir -p webhid && shx cp -r node_modules/joy-con-webhid/dist/* webhid/"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,10 @@
   },
   "homepage": "https://github.com/tomayac/chrome-dino-webhid#readme",
   "devDependencies": {
-    "http-server": "^0.12.3"
+    "http-server": "^0.12.3",
+    "shx": "^0.3.3"
+  },
+  "dependencies": {
+    "joy-con-webhid": "0.0.1"
   }
 }

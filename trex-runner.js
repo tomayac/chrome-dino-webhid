@@ -1,3 +1,5 @@
+import * as JoyCon from './webhid/index.js';
+
 (function () {
   var lastTime = 0;
   var vendors = ['ms', 'moz', 'webkit', 'o'];
@@ -92,8 +94,8 @@ let that = null;
     MIN_JUMP_HEIGHT: 35,
     MOBILE_SPEED_COEFFICIENT: 1.2,
     RESOURCE_TEMPLATE_ID: 'audio-resources',
-    SPEED: 6,
-    SPEED_DROP_COEFFICIENT: 3,
+    SPEED: 4,
+    SPEED_DROP_COEFFICIENT: 1,
   };
   Runner.defaultDimensions = {
     WIDTH: DEFAULT_WIDTH,
@@ -1034,7 +1036,7 @@ let that = null;
       height: 35,
       yPos: 105,
       multipleSpeed: 4,
-      minGap: 120,
+      minGap: 250,
       minSpeed: 0,
       collisionBoxes: [
         new CollisionBox(0, 7, 5, 27),
@@ -1048,7 +1050,7 @@ let that = null;
       height: 50,
       yPos: 90,
       multipleSpeed: 7,
-      minGap: 120,
+      minGap: 250,
       minSpeed: 0,
       collisionBoxes: [
         new CollisionBox(0, 12, 7, 38),
@@ -1064,7 +1066,7 @@ let that = null;
       yPosMobile: [100, 50],
       multipleSpeed: 999,
       minSpeed: 8.5,
-      minGap: 150,
+      minGap: 300,
       collisionBoxes: [
         new CollisionBox(15, 15, 16, 5),
         new CollisionBox(18, 21, 24, 6),
@@ -1909,218 +1911,58 @@ const globalVibrate = () => {
 
   const button = document.querySelector('.controller');
 
-  const toPaddedString = (bytes) =>
-  [bytes, ...new Array(11 - bytes.length).fill(0)].flat().join();
+  const threshold = 0.03;
 
-  const BUTTON_MAPPING = {
-    // Joy-Con Left
-    0x2006: {
-      [toPaddedString([1, 0, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'Left',
-      },
-      [toPaddedString([2, 0, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'Down',
-      },
-      [toPaddedString([4, 0, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'Up',
-      },
-      [toPaddedString([8, 0, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'Right',
-      },
-      [toPaddedString([0, 1, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'Minus',
-      },
-      [toPaddedString([0, 32, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'Capture',
-      },
-      [toPaddedString([0, 64, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'L',
-      },
-      [toPaddedString([0, 128, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'ZL',
-      },
-      [toPaddedString([16, 0, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'SL',
-      },
-      [toPaddedString([32, 0, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'SR',
-      },
-
-      [toPaddedString([0, 0, 4, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'StickLeft',
-      },
-      [toPaddedString([0, 0, 0, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'StickRight',
-      },
-      [toPaddedString([0, 0, 6, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'StickUp',
-      },
-      [toPaddedString([0, 0, 2, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'StickDown',
-      },
-      [toPaddedString([0, 4, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'StickButton',
-      },
-    },
-
-    // Joy-Con Right
-    0x2007: {
-      [toPaddedString([1, 0, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'A',
-      },
-      [toPaddedString([2, 0, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'X',
-      },
-      [toPaddedString([4, 0, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'B',
-      },
-      [toPaddedString([8, 0, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'Y',
-      },
-      [toPaddedString([0, 2, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'Plus',
-      },
-      [toPaddedString([0, 16, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'Home',
-      },
-      [toPaddedString([0, 64, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'R',
-      },
-      [toPaddedString([0, 128, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'ZR',
-      },
-      [toPaddedString([16, 0, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'SL',
-      },
-      [toPaddedString([32, 0, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'SR',
-      },
-
-      [toPaddedString([0, 0, 4, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'StickRight',
-      },
-      [toPaddedString([0, 0, 0, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'StickLeft',
-      },
-      [toPaddedString([0, 0, 6, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'StickDown',
-      },
-      [toPaddedString([0, 0, 2, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'StickUp',
-      },
-      [toPaddedString([0, 8, 8, 0, 128, 0, 128, 0, 128, 0, 128])]: {
-        name: 'StickButton',
-      },
-    },
-  };
-
-  navigator.hid.addEventListener('connect', ({ device }) => {
-    console.log(`HID connected: ${device.productName}`);
-  });
-
-  navigator.hid.addEventListener('disconnect', ({ device }) => {
-    console.log(`HID disconnected: ${device.productName}`);
-  });
-
-  document.addEventListener('DOMContentLoaded', async () => {
-    devices = await navigator.hid.getDevices();
-    openDevices();
-  });
-
-  const openDevices = () => {
-    devices.forEach(async (device) => {
-      if (!device.opened) {
-        await device.open();
-      }
-      await enableSimpleHIDMode(device);
-      device.addEventListener('inputreport', onInputReport);
-    });
-  };
-
-  const onInputReport = (event) => {
-    const { data, device, reportId } = event;
-    if (reportId !== 0x3f) {
+  let debounceKeyDown;
+  let debounceKeyUp;
+  const shouldJump = (accelerometer) => {
+    if (!accelerometer || !accelerometer.x) {
       return;
     }
-    const bytes = new Uint8Array(data.buffer).slice(0, 11).join();
-    const button = BUTTON_MAPPING[device.productId][bytes];
-    if (button) {
+    if (Math.abs(accelerometer.x) > threshold) {
       if (!that.crashed) {
-        const message = `User pressed button "${button.name}" on ${device.productName} (${device.productId}).`;
-        console.log(message);
-        switch (button.name) {
-          case 'A':
-          case 'B':
-          case 'X':
-          case 'Y':
-          case 'StickUp':
-          case 'Left':
-          case 'Right':
-          case 'Up':
-          case 'Down':
-          case 'L':
-          case 'R':
-          case 'ZL':
-          case 'ZR':
-            var event = new Event('keydown');
-              event.keyCode = 32; // Space key
-              document.dispatchEvent(event);
-            break;
-          case 'StickDown':
-            var event = new Event('keydown');
-            event.keyCode = 40; // Arrow down
-            document.dispatchEvent(event);
-            setTimeout(function() {
-              var event = new Event('keyup');
-              event.keyCode = 40; // Arrow down
-              document.dispatchEvent(event);
-            }, 250);
-            break;
-        }
-      } else {
-        that.restart();
-      }
+        clearTimeout(debounceKeyDown);
+        debounceKeyDown = setTimeout(() => {
+          console.log('Jump');
+          const event = new Event('keydown');
+          event.keyCode = 32; // Space key
+          document.dispatchEvent(event);
+        }, 50);
+      } /*else if (accelerometer.x < -threshold) {
+        clearTimeout(debounceKeyUp);
+        debounceKeyUp = setTimeout(() => {
+          console.log('Cover');
+          var event = new Event('keyup');
+          event.keyCode = 40; // Arrow down
+          document.dispatchEvent(event);
+        }, 100);
+      }*/
+    } else {
+      that.restart();
     }
   };
 
   button.addEventListener('click', async function() {
-  // Filter on devices with the Nintendo Switch Joy-Con USB Vendor/Product IDs.
-  const filters = [
-    {
-      vendorId: 0x057e, // Nintendo Co., Ltd
-      productId: 0x2006, // Joy-Con Left
-    },
-    {
-      vendorId: 0x057e, // Nintendo Co., Ltd
-      productId: 0x2007, // Joy-Con Right
-    },
-  ];
-  // Prompt user to select a Joy-Con device.
-  try {
-    const [device] = await navigator.hid.requestDevice({ filters });
-    if (!device) {
+    await JoyCon.connectJoyCon();
+  });
+
+  setInterval(async () => {
+    if (!JoyCon.connectedJoyCons.size) {
       return;
     }
-    if (
-      !devices.find((knownDevice) => {
-        return (
-          knownDevice.productId === device.productId &&
-          knownDevice.vendorId === device.vendorId
-        );
-      })
-    ) {
-      devices.push(device);
-      openDevices();
+    for (const joyCon of JoyCon.connectedJoyCons.values()) {
+      if (joyCon.eventListenerAttached) {
+        continue;
+      }
+      await joyCon.open();
+      await joyCon.enableStandardFullMode();
+      await joyCon.enableIMUMode();
+      joyCon.addEventListener('hidinput', (event) => {
+        shouldJump(event.detail.actualAccelerometer);
+      });
+      joyCon.eventListenerAttached = true;
     }
-  } catch (error) {
-    console.error(error.name, error.message);
-  }
-});
-
-const enableSimpleHIDMode = async (device) => {
-  const enableSimpleHIDModeData = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x3f];
-  await device.sendReport(0x01, new Uint8Array(enableSimpleHIDModeData));
-};
+  }, 2000);
 
 })();
 
