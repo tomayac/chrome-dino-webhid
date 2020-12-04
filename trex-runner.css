@@ -14,6 +14,8 @@
 }
 
 body {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,9 +25,25 @@ body {
   color: var(--primary-fg);
 }
 
+button {
+  font: inherit;
+  cursor: pointer;
+  display: block;
+}
+
+ol {
+  max-width: 38ch;
+  margin-top: 30px;
+  line-height: 1.5;
+}
+
+summary {
+  cursor: pointer;
+}
+
 .controller {
   position: absolute;
-  top: 1rem;
+  top: 25px;
 }
 
 .interstitial-wrapper {
@@ -38,27 +56,15 @@ body {
 }
 
 #dark-mode-toggle {
-  border: none;
-  background: none;
-  position: fixed;
-  top: 30px;
+  position: absolute;
+  top: 20px;
   right: 30px;
-  font-size: 20px;
-  cursor: pointer;
-  color: transparent;
-  text-shadow: 0 0 0 #bbb;
 }
 
 #fullscreen-toggle {
-  border: none;
-  background: none;
-  position: fixed;
-  top: 25px;
-  right: 75px;
-  font-size: 30px;
-  cursor: pointer;
-  color: transparent;
-  text-shadow: 0 0 0 #bbb;
+  position: absolute;
+  top: 20px;
+  right: 120px;
 }
 
 *:-webkit-full-screen {

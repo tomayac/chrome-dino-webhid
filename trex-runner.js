@@ -1827,12 +1827,10 @@ let that = null;
     var fullscreenElement = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
     var canvas = document.getElementsByTagName('canvas')[0];
     if (fullscreenElement) {
-      fullscreenBtn.textContent = '□';
       exitFullscreen();
       return;
     }
     launchIntoFullscreen(canvas);
-    fullscreenBtn.textContent = '■';
   });
 
   var darkModeToggleBtn = document.getElementById('dark-mode-toggle');
@@ -1850,13 +1848,11 @@ let that = null;
   });
 
   function enableDarkMode() {
-    darkModeToggleBtn.innerHTML = '☀️';
     localStorage.setItem('theme', 'dark');
     document.body.classList.add('dark-mode');
   }
 
   function disableDarkMode() {
-    darkModeToggleBtn.innerHTML = '★';
     localStorage.setItem('theme', 'light');
     document.body.classList.remove('dark-mode');
   }
@@ -1909,7 +1905,7 @@ const globalVibrate = () => {
 
 (function() {
 
-  const button = document.querySelector('.controller');
+  const button = document.querySelector('#controller');
 
   const threshold = 0.03;
 

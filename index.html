@@ -12,6 +12,8 @@
       }
     </script>
     <link rel="stylesheet" href="trex-runner.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" href="images/icon.png">
     <link rel="apple-touch-icon" href="images/icon.png">
@@ -19,10 +21,21 @@
 
   <body>
     <div class="interstitial-wrapper">
-      <button type="button" hidden id="fullscreen-toggle" title="Full screen toggle">■</button>
-      <button type="button" id="dark-mode-toggle" title="Dark mode toggle">★</button>
+      <button type="button" hidden id="fullscreen-toggle" title="Full screen toggle">Fullscreen</button>
+      <button type="button" id="dark-mode-toggle" title="Dark mode toggle">Theme</button>
     </div>
-    <div class="controller"><button type="button">Connect Joy-Con</button></div>
+    <details class="controller">
+      <summary>Instructions</summary>
+      <ol>
+        <li>Pair a Joy-Con controller via your operating system's Bluetooth settings.</li>
+        <li>Connect a Nintendo Joy-Con controller by pressing the button below.
+          <button type="button" id="controller">Connect Joy-Con</button>
+        </li>
+        <li>Put the Joy-Con in your pocket.</li>
+        <li>Start jumping to start the game.</li>
+        <li>Jump whenever an obstable appears.</li>
+      </ol>
+    </details>
     <script>
       window.onerror = function (msg, url, lineNo, columnNo, error) {
         document.body.innerHTML = '<pre>Message: ' + msg +
