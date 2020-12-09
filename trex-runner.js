@@ -1,5 +1,3 @@
-import * as JoyCon from './webhid/index.js';
-
 (function () {
   var lastTime = 0;
   var vendors = ['ms', 'moz', 'webkit', 'o'];
@@ -1903,7 +1901,11 @@ const globalVibrate = () => {
   });
 };
 
-(function() {
+(async function() {
+  if (!('hid' in navigator)) {
+    return;
+  }
+  const  JoyCon = await import('./webhid/index.js');
 
   const button = document.querySelector('#controller');
 
