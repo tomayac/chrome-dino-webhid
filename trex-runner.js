@@ -613,13 +613,6 @@ let that = null;
         currentScore = Math.round(this.highestScore * 0.025);
       }
       this.time = getTimeStamp();
-      if (this.distanceRan > 100 && window.opener) {
-        window.opener.postMessage({
-          'action': 'dino-completed',
-          'score': this.distanceRan,
-          'url': document.URL,
-        }, '*');
-      }
     },
     stop: function () {
       this.activated = false;
